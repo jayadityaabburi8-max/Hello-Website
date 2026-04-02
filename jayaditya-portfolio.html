@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAYADITYA // Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Bebas+Neue&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --val-red: #ff4655;
+    --val-teal: #00d4aa;
+    --val-dark: #0f1923;
+    --val-darker: #08101a;
+    --val-panel: #1a2634;
+    --val-border: #253341;
+    --val-text: #ece8e1;
+    --val-muted: #7d8a96;
+    --val-gold: #ffd700;
+    --val-white: #ece8e1;
+  }
+
+  body.light-mode {
+    --val-dark: #ece8e1;
+    --val-darker: #ffffff;
+    --val-panel: #f5f3ef;
+    --val-border: #d0c8be;
+    --val-text: #0f1923;
+    --val-muted: #5c6b78;
+    --val-white: #0f1923;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--val-darker);
+    color: var(--val-text);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* SCANLINE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* CURSOR */
+  .cursor-dot {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--val-red);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(8,16,26,0.95);
+    border-bottom: 1px solid var(--val-border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--val-red);
+    letter-spacing: 4px;
+    margin-right: auto;
+  }
+
+  .nav-logo span { color: var(--val-text); }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    color: var(--val-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 2px;
+    background: var(--val-red);
+    transition: width 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--val-text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 4rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 80% 50%, rgba(255,70,85,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(0,212,170,0.05) 0%, transparent 50%),
+      var(--val-darker);
+  }
+
+  /* GRID LINES */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,70,85,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,70,85,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 700px; }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-teal);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    display: inline-block;
+    width: 30px; height: 1px;
+    background: var(--val-teal);
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    line-height: 0.9;
+    color: var(--val-text);
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-name .highlight { color: var(--val-red); }
+
+  .hero-rank {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-gold);
+    font-size: 1rem;
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+  }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: var(--val-muted);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    font-weight: 500;
+  }
+
+  .hero-desc strong { color: var(--val-text); }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--val-red);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #cc2233; transform: translateY(-2px); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--val-teal);
+    border: 1px solid var(--val-teal);
+    padding: 13px 32px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    background: var(--val-teal);
+    color: var(--val-dark);
+    transform: translateY(-2px);
+  }
+
+  /* HERO SIDE DECORATION */
+  .hero-deco {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 350px;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .agent-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,70,85,0.3);
+    position: relative;
+    animation: rotate 20s linear infinite;
+  }
+
+  .agent-circle::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,170,0.2);
+    animation: rotate 10s linear infinite reverse;
+  }
+
+  .agent-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    animation: rotate 20s linear infinite reverse;
+    filter: drop-shadow(0 0 20px rgba(255,70,85,0.3));
+  }
+
+  @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  /* SECTIONS */
+  section {
+    padding: 5rem 4rem;
+    position: relative;
+  }
+
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-red);
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-tag::before {
+    content: '//';
+    color: var(--val-muted);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 3px;
+    margin-bottom: 3rem;
+    color: var(--val-text);
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    background: var(--val-panel);
+    border-top: 1px solid var(--val-border);
+    border-bottom: 1px solid var(--val-border);
+    padding: 1.5rem 4rem;
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    color: var(--val-red);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--val-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-card {
+    background: var(--val-panel);
+    border: 1px solid var(--val-border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--val-red);
+  }
+
+  .about-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    color: var(--val-red);
+    margin-bottom: 1rem;
+  }
+
+  .about-card p {
+    color: var(--val-muted);
+    line-height: 1.8;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .info-list { list-style: none; }
+
+  .info-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--val-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+  }
+
+  .info-list li:last-child { border-bottom: none; }
+
+  .info-label {
+    color: var(--val-muted);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .info-value { color: var(--val-text); font-weight: 600; }
+
+  /* CAREER PATHS */
+  .career-bg { background: var(--val-panel); }
+
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .path-card {
+    background: var(--val-darker);
+    border: 1px solid var(--val-border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: pointer;
+  }
+
+  .path-card:hover {
+    border-color: var(--val-red);
+    transform: translateY(-4px);
+  }
+
+  .path-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 30px 30px;
+    border-color: transparent transparent var(--val-red) transparent;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .path-card:hover::after { opacity: 1; }
+
+  .path-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .path-role {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--val-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .path-salary {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-gold);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+
+  .path-desc {
+    color: var(--val-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .path-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+
+  .skill-tag {
+    background: rgba(255,70,85,0.1);
+    border: 1px solid rgba(255,70,85,0.3);
+    color: var(--val-red);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .path-timeline {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--val-teal);
+    letter-spacing: 1px;
+  }
+
+  /* ROADMAP */
+  .roadmap { position: relative; }
+
+  .timeline {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--val-red), var(--val-teal));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+    padding-left: 1.5rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.65rem;
+    top: 6px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--val-red);
+    border: 3px solid var(--val-darker);
+    box-shadow: 0 0 0 2px var(--val-red);
+  }
+
+  .timeline-dot.active {
+    background: var(--val-teal);
+    box-shadow: 0 0 0 2px var(--val-teal), 0 0 15px var(--val-teal);
+  }
+
+  .timeline-year {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-red);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-item.active .timeline-year { color: var(--val-teal); }
+
+  .timeline-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--val-text);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-desc {
+    color: var(--val-muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+
+  .timeline-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
+
+  .badge {
+    background: rgba(0,212,170,0.1);
+    border: 1px solid rgba(0,212,170,0.3);
+    color: var(--val-teal);
+    padding: 3px 10px;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* SKILLS SECTION */
+  .skills-section { background: var(--val-darker); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-card {
+    background: var(--val-panel);
+    border: 1px solid var(--val-border);
+    padding: 1.5rem;
+    transition: border-color 0.3s;
+  }
+
+  .skill-card:hover { border-color: rgba(255,70,85,0.5); }
+
+  .skill-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--val-text);
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .skill-pct {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-muted);
+    font-size: 0.8rem;
+  }
+
+  .skill-bar {
+    height: 3px;
+    background: var(--val-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: var(--val-red);
+    transition: width 1s ease;
+  }
+
+  /* TARGET: 50 LPA SECTION */
+  .target-section {
+    background: linear-gradient(135deg, rgba(255,70,85,0.05) 0%, rgba(0,212,170,0.05) 100%);
+    border-top: 1px solid var(--val-border);
+    border-bottom: 1px solid var(--val-border);
+    text-align: center;
+    padding: 5rem 4rem;
+  }
+
+  .target-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 15vw, 12rem);
+    line-height: 0.9;
+    color: var(--val-gold);
+    letter-spacing: 4px;
+    text-shadow: 0 0 40px rgba(255,215,0,0.3);
+    margin-bottom: 1rem;
+  }
+
+  .target-label {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--val-muted);
+    font-size: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .target-desc {
+    color: var(--val-text);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+    font-weight: 500;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--val-darker);
+    border-top: 1px solid var(--val-border);
+    padding: 3rem 4rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--val-red);
+    letter-spacing: 6px;
+    margin-bottom: 1rem;
+  }
+
+  .footer-text {
+    color: var(--val-muted);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  /* DIVIDER */
+  .val-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--val-red), transparent);
+    margin: 0 4rem;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--val-darker); }
+  ::-webkit-scrollbar-thumb { background: var(--val-red); }
+
+  /* ANIMATIONS */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(255,70,85,0.3); }
+    50% { box-shadow: 0 0 25px rgba(255,70,85,0.6); }
+  }
+
+  .glow { animation: pulse-glow 2s ease infinite; }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    section { padding: 3rem 1.5rem; }
+    .hero { padding: 80px 1.5rem 3rem; }
+    .stats-bar { padding: 1.5rem; gap: 2rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .hero-deco { display: none; }
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 1rem; }
+    .target-section { padding: 3rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+    .val-divider { margin: 0 1.5rem; }
+  }
+
+  /* BLINKING CURSOR */
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .blink { animation: blink 1s step-end infinite; }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursor"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JAY<span>ADITYA</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#career">Careers</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#target">Mission</a></li>
+    <li><a href="#" id="theme-toggle">🌓 Theme</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">AGENT PROFILE LOADED</div>
+    <h1 class="hero-name">
+      JAY<span class="highlight">A</span>DIT<span class="highlight">Y</span>A
+    </h1>
+    <div class="hero-rank">◆ 1ST YEAR B.TECH &nbsp;|&nbsp; GRIET &nbsp;|&nbsp; CS & DATA SCIENCE</div>
+    <p class="hero-desc">
+      Engineering student by day, <strong>Valorant player</strong> by night. Building the skills to hit <strong>₹50 LPA</strong> — because grinding ranked is the same as grinding code. Both need strategy, patience, and clutch plays.
+    </p>
+    <div class="hero-btns">
+      <a href="#career" class="btn-primary">View Career Paths</a>
+      <a href="#roadmap" class="btn-secondary">My Roadmap</a>
+    </div>
+  </div>
+
+  <div class="hero-deco">
+    <div class="agent-circle">
+      <div class="agent-icon">🎮</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value">1ST</div>
+    <div class="stat-label">Year B.Tech</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">CSDS</div>
+    <div class="stat-label">Specialisation</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">GRIET</div>
+    <div class="stat-label">College</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">50L</div>
+    <div class="stat-label">Target CTC</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">VAL</div>
+    <div class="stat-label">Gamer Tag</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag">Player Info</div>
+  <h2 class="section-title">About Me</h2>
+
+  <div class="about-grid">
+    <div class="about-card">
+      <h3>🎯 My Story</h3>
+      <p>
+        Hey! I'm <strong style="color:#ece8e1;">Jayaditya</strong>, a passionate first-year CS & Data Science student at GRIET (Gokaraju Rangaraju Institute of Engineering and Technology), Hyderabad. I live for the grind — whether it's climbing ranks in Valorant or climbing the leaderboard in programming contests.
+        <br><br>
+        Just like in Valorant where every agent has a unique role, I'm discovering mine in the world of tech — where data meets code and strategy meets execution. The game has taught me one thing: <em style="color:#00d4aa;">composition matters</em>. Build the right skill stack, and victory follows.
+      </p>
+    </div>
+
+    <div class="about-card">
+      <h3>📋 Agent Details</h3>
+      <ul class="info-list">
+        <li>
+          <span class="info-label">Name</span>
+          <span class="info-value">Jayaditya</span>
+        </li>
+        <li>
+          <span class="info-label">College</span>
+          <span class="info-value">GRIET, Hyderabad</span>
+        </li>
+        <li>
+          <span class="info-label">Degree</span>
+          <span class="info-value">B.Tech — CSDS</span>
+        </li>
+        <li>
+          <span class="info-label">Year</span>
+          <span class="info-value">1st Year (2024-2028)</span>
+        </li>
+        <li>
+          <span class="info-label">Specialization</span>
+          <span class="info-value">CS & Data Science</span>
+        </li>
+        <li>
+          <span class="info-label">Hobby</span>
+          <span class="info-value">Valorant 🎮</span>
+        </li>
+        <li>
+          <span class="info-label">Main Goal</span>
+          <span class="info-value">₹50 LPA by 2028</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="val-divider"></div>
+
+<!-- CAREER PATHS -->
+<section id="career" class="career-bg">
+  <div class="section-tag">Select Your Role</div>
+  <h2 class="section-title">Career Paths to ₹50 LPA</h2>
+
+  <div class="paths-grid">
+
+    <div class="path-card">
+      <span class="path-icon">🤖</span>
+      <div class="path-role">ML / AI Engineer</div>
+      <div class="path-salary">₹30–80 LPA &nbsp;●&nbsp; TOP PICK</div>
+      <p class="path-desc">Build intelligent systems that learn and adapt. With CSDS background, this is your strongest lane. AI Engineers at top companies like Google, OpenAI, and Indian unicorns command massive packages.</p>
+      <div class="path-skills">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">TensorFlow</span>
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">Math / Stats</span>
+        <span class="skill-tag">MLOps</span>
+      </div>
+      <div class="path-timeline">⏱ 3-4 years to ₹50 LPA</div>
+    </div>
+
+    <div class="path-card">
+      <span class="path-icon">📊</span>
+      <div class="path-role">Data Scientist</div>
+      <div class="path-salary">₹25–70 LPA &nbsp;●&nbsp; HOT MARKET</div>
+      <p class="path-desc">Turn raw data into insights that drive billion-dollar decisions. Perfect alignment with your Data Science specialization. High demand across fintech, healthcare, e-commerce.</p>
+      <div class="path-skills">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">Statistics</span>
+        <span class="skill-tag">Tableau</span>
+        <span class="skill-tag">ML Algorithms</span>
+      </div>
+      <div class="path-timeline">⏱ 3-4 years to ₹50 LPA</div>
+    </div>
+
+    <div class="path-card">
+      <span class="path-icon">☁️</span>
+      <div class="path-role">Cloud / DevOps Engineer</div>
+      <div class="path-salary">₹25–65 LPA &nbsp;●&nbsp; STABLE</div>
+      <p class="path-desc">Architect the infrastructure that powers the internet. AWS, GCP, and Azure certifications can skyrocket your pay early. High demand and global opportunities.</p>
+      <div class="path-skills">
+        <span class="skill-tag">AWS/GCP</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span>
+        <span class="skill-tag">CI/CD</span>
+        <span class="skill-tag">Linux</span>
+      </div>
+      <div class="path-timeline">⏱ 3-5 years to ₹50 LPA</div>
+    </div>
+
+    <div class="path-card">
+      <span class="path-icon">🔐</span>
+      <div class="path-role">Cybersecurity Engineer</div>
+      <div class="path-salary">₹20–60 LPA &nbsp;●&nbsp; RISING</div>
+      <p class="path-desc">The guardian of digital worlds — just like Sage in Valorant. With cyber threats exploding globally, security engineers are the most sought-after and least available professionals in tech.</p>
+      <div class="path-skills">
+        <span class="skill-tag">Ethical Hacking</span>
+        <span class="skill-tag">Networking</span>
+        <span class="skill-tag">SIEM</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">CEH/CISSP</span>
+      </div>
+      <div class="path-timeline">⏱ 4-5 years to ₹50 LPA</div>
+    </div>
+
+    <div class="path-card">
+      <span class="path-icon">💻</span>
+      <div class="path-role">Full Stack Developer</div>
+      <div class="path-salary">₹20–55 LPA &nbsp;●&nbsp; CLASSIC</div>
+      <p class="path-desc">Build products end-to-end. A solid foundation for any tech career — master DSA, system design, and modern frameworks to crack FAANG-level interviews and hit top packages.</p>
+      <div class="path-skills">
+        <span class="skill-tag">React/Next.js</span>
+        <span class="skill-tag">Node.js</span>
+        <span class="skill-tag">DSA</span>
+        <span class="skill-tag">System Design</span>
+        <span class="skill-tag">Databases</span>
+      </div>
+      <div class="path-timeline">⏱ 3-4 years to ₹50 LPA</div>
+    </div>
+
+    <div class="path-card">
+      <span class="path-icon">📱</span>
+      <div class="path-role">Quantitative Analyst</div>
+      <div class="path-salary">₹40–100 LPA &nbsp;●&nbsp; ELITE</div>
+      <p class="path-desc">The rarest and highest-paid role. Use math, stats, and programming to build financial models at hedge funds and banks. CSDS + strong math skills = perfect combo for this path.</p>
+      <div class="path-skills">
+        <span class="skill-tag">Mathematics</span>
+        <span class="skill-tag">Statistics</span>
+        <span class="skill-tag">Python/C++</span>
+        <span class="skill-tag">Finance</span>
+        <span class="skill-tag">ML Models</span>
+      </div>
+      <div class="path-timeline">⏱ 4-6 years to ₹50+ LPA</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="val-divider"></div>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="section-tag">Match History</div>
+  <h2 class="section-title">Your 4-Year Battle Plan</h2>
+
+  <div class="roadmap">
+    <div class="timeline">
+
+      <div class="timeline-item active">
+        <div class="timeline-dot active"></div>
+        <div class="timeline-year">▶ 2024–2025 &nbsp;// YEAR 1 — FOUNDATION</div>
+        <div class="timeline-title">Warm Up Phase — You Are Here</div>
+        <p class="timeline-desc">
+          You're in the lobby right now. Focus on C, C++, and Python fundamentals. Build problem-solving habits on LeetCode and HackerRank. Get comfortable with Mathematics, Statistics, and Linux. Join college clubs and attend hackathons to feel the energy of the tech world.
+        </p>
+        <div class="timeline-badges">
+          <span class="badge">C / C++</span>
+          <span class="badge">Python Basics</span>
+          <span class="badge">Data Structures</span>
+          <span class="badge">DBMS</span>
+          <span class="badge">Git & GitHub</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2025–2026 &nbsp;// YEAR 2 — ABILITY UNLOCK</div>
+        <div class="timeline-title">Specialize & Build</div>
+        <p class="timeline-desc">
+          Choose your lane: ML/AI or Full Stack. Go deep on Data Structures & Algorithms (DSA is your Rank grinder). Start working on personal projects — GitHub becomes your resume. Target your first internship by end of year. Solve 200+ LeetCode problems.
+        </p>
+        <div class="timeline-badges">
+          <span class="badge">DSA Mastery</span>
+          <span class="badge">Machine Learning</span>
+          <span class="badge">SQL & Databases</span>
+          <span class="badge">2+ Projects</span>
+          <span class="badge">Internship Hunt</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2026–2027 &nbsp;// YEAR 3 — RANKED GRIND</div>
+        <div class="timeline-title">Internship + Deep Specialization</div>
+        <p class="timeline-desc">
+          Land a paid internship at a startup or mid-size company. Build a strong GitHub portfolio. Contribute to open source. Get certifications (AWS, TensorFlow, etc.). Target pre-placement offers (PPOs). Start competitive programming and participate in national hackathons.
+        </p>
+        <div class="timeline-badges">
+          <span class="badge">Internship (Paid)</span>
+          <span class="badge">Deep Learning</span>
+          <span class="badge">System Design</span>
+          <span class="badge">Cloud Cert</span>
+          <span class="badge">Open Source</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-year">2027–2028 &nbsp;// YEAR 4 — FINAL ACE</div>
+        <div class="timeline-title">Placement Season — Clutch Time</div>
+        <p class="timeline-desc">
+          FAANG / Top MNC placement season. Target Google, Microsoft, Amazon, Goldman Sachs, Flipkart, Swiggy. You'll have 2+ internships, 5+ projects, DSA mastery, and a specialization. With this stack, ₹50 LPA is not a dream — it's a realistic outcome. Go for it.
+        </p>
+        <div class="timeline-badges">
+          <span class="badge">FAANG Prep</span>
+          <span class="badge">500+ LeetCode</span>
+          <span class="badge">Mock Interviews</span>
+          <span class="badge">₹50 LPA Target</span>
+          <span class="badge">Ace It</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="val-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section">
+  <div class="section-tag">Agent Abilities</div>
+  <h2 class="section-title">Current Skill Loadout</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-name">Problem Solving <span class="skill-pct">60%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Python <span class="skill-pct">45%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:45%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">C / C++ <span class="skill-pct">40%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:40%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Mathematics <span class="skill-pct">70%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Team Strategy <span class="skill-pct">85%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:85%; background: var(--val-teal);"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Communication <span class="skill-pct">80%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:80%; background: var(--val-teal);"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Valorant Aim 🎯 <span class="skill-pct">92%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:92%; background: var(--val-gold);"></div></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-name">Hustle / Grind <span class="skill-pct">100%</span></div>
+      <div class="skill-bar"><div class="skill-fill" style="width:100%; background: linear-gradient(90deg, var(--val-red), var(--val-gold));"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TARGET SECTION -->
+<section id="target" class="target-section">
+  <div class="section-tag" style="justify-content:center;">Final Mission</div>
+  <div class="target-number">₹50 LPA</div>
+  <div class="target-label">Target Package &nbsp;|&nbsp; 2028 &nbsp;|&nbsp; Operation: Dream Job</div>
+  <p class="target-desc">
+    In Valorant, you don't hit Radiant by accident. You grind, you study opponents, you build synergy with your team. Your career is the same game. With CSDS from GRIET, a passion for data and AI, and the gamer mindset of <strong>never giving up on a round</strong> — ₹50 LPA isn't a long shot. It's just the next rank to climb. <br><br>
+    <strong style="color: var(--val-gold);">Spike planted. Defuse it with code.</strong>
+  </p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">JAYADITYA</div>
+  <p class="footer-text">B.Tech CSDS &nbsp;//&nbsp; GRIET Hyderabad &nbsp;//&nbsp; Valorant Player &nbsp;//&nbsp; Future Tech Leader</p>
+  <p style="color: rgba(125,138,150,0.5); font-size:0.7rem; margin-top: 1rem; font-family: 'Share Tech Mono', monospace; letter-spacing: 2px;">
+    &copy; 2025 JAYADITYA &nbsp;|&nbsp; ALL AGENTS READY
+  </p>
+</footer>
+
+<script>
+  // Theme Toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  const body = document.body;
+
+  // Check saved theme
+  if (localStorage.getItem('theme') === 'light') {
+    body.classList.add('light-mode');
+  }
+
+  themeToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    body.classList.toggle('light-mode');
+    
+    if (body.classList.contains('light-mode')) {
+      localStorage.setItem('theme', 'light');
+    } else {
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  // Skill bars animate on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fills = entry.target.querySelectorAll('.skill-fill');
+        fills.forEach(fill => {
+          const w = fill.style.width;
+          fill.style.width = '0%';
+          setTimeout(() => { fill.style.width = w; }, 100);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const skillsSection = document.querySelector('.skills-grid');
+  if (skillsSection) observer.observe(skillsSection);
+
+  // Path card hover effect
+  document.querySelectorAll('.path-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      card.style.boxShadow = '0 8px 40px rgba(255,70,85,0.15)';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.boxShadow = 'none';
+    });
+  });
+</script>
+
+</body>
+</html>
